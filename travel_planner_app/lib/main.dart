@@ -5,10 +5,19 @@ import 'models/trip.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  FirebaseUIAuth.configureProviders([
+    EmailAuthProvider(),
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -16,6 +25,28 @@ void main() async {
 // void main() {
 //   runApp(const MyApp());
 // }
+
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<fb_auth.User?>(
+      stream: fb_auth.FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return SignInScreen(
+            providers: [
+              EmailAuthProvider(), // ✅ firebase_ui_auth one
+            ],
+          );
+        }
+
+        return const MyHomePage();
+      },
+    );
+  }
+}
 
 // Root widget
 class MyApp extends StatelessWidget {
@@ -31,7 +62,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         ),
-        home: const MyHomePage(),
+        // home: const MyHomePage(),
+        home: const AuthGate(),
       ),
     );
   }
@@ -104,6 +136,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('iTravel'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () async {
+              await fb_auth.FirebaseAuth.instance.signOut();
+            },
+          ),
+        ],
+      ),
       body: Row(
         children: [
           SafeArea(

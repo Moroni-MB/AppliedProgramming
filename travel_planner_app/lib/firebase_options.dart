@@ -26,15 +26,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -59,4 +53,23 @@ class DefaultFirebaseOptions {
     projectId: 'travel-planner-app-4571a',
     storageBucket: 'travel-planner-app-4571a.firebasestorage.app',
   );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDkN9teaTOnvc3UW3TEJoxl6K0Nbfhjjf8',
+    appId: '1:428918345283:ios:b061af0891a637b3360ef6',
+    messagingSenderId: '428918345283',
+    projectId: 'travel-planner-app-4571a',
+    storageBucket: 'travel-planner-app-4571a.firebasestorage.app',
+    iosBundleId: 'com.example.testapp',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDkN9teaTOnvc3UW3TEJoxl6K0Nbfhjjf8',
+    appId: '1:428918345283:ios:b061af0891a637b3360ef6',
+    messagingSenderId: '428918345283',
+    projectId: 'travel-planner-app-4571a',
+    storageBucket: 'travel-planner-app-4571a.firebasestorage.app',
+    iosBundleId: 'com.example.testapp',
+  );
+
 }
